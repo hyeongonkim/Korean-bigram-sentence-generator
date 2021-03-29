@@ -158,12 +158,19 @@ int maxFreq(int i1, int i2, int *j1max, int *j2max)
 {
 	int j1, j2, i = 0;
 
+	int pI = 0;
+	for (j1 = 15; j1 < 40; j1++) {	// 25: B0~C8 으로 축소 가능
+		for (j2 = 0; j2 < TOTAL_EUC_KR; j2++) {
+			pI += Cnt[i1][i2][j1][j2];
+		}
+	}
+
 	for (j1 = 15; j1 < 40; j1++) {	// 25: B0~C8 으로 축소 가능
 		for (j2 = 0; j2 < TOTAL_EUC_KR; j2++) {
 			BiFreqStructs[i].first = j1;
 			BiFreqStructs[i].second = j2;
 			BiFreqStructs[i].cnt = Cnt[i1][i2][j1][j2];
-			BiFreqStructs[i].freq = (double) Cnt[i1][i2][j1][j2] / CntUni[i1][i2]; // P(j | i) 계산
+			BiFreqStructs[i].freq = (double) Cnt[i1][i2][j1][j2] / pI; // P(j | i) 계산
 			i++;
 		}
 	}
