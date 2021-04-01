@@ -70,7 +70,7 @@ double getFreq(int i1, int i2, int j1, int j2)
 {
 	int pI = 0;
 
-	if (i1 != '-' && i2 != '-') {
+	if (i1 != -999 && i2 != -999) {
 		for (int j11 = 15; j11 < 40; j11++) {	// 25: B0~C8 으로 축소 가능
 			for (int j22 = 0; j22 < TOTAL_EUC_KR; j22++) {
 				pI += Cnt[i1][i2][j11][j22];
@@ -78,9 +78,9 @@ double getFreq(int i1, int i2, int j1, int j2)
 		}
 	}
 	
-	if (j1 == '-' && j2 == '-') {
+	if (j1 == -999 && j2 == -999) {
 		pI += CntBlank[i1][i2];
-	} else if (i1 == '-' && i2 == '-') {
+	} else if (i1 == -999 && i2 == -999) {
 		for (int j11 = 15; j11 < 40; j11++) {	// 25: B0~C8 으로 축소 가능
 			for (int j22 = 0; j22 < TOTAL_EUC_KR; j22++) {
 				pI += CntBlankStart[j11][j22];
@@ -88,9 +88,9 @@ double getFreq(int i1, int i2, int j1, int j2)
 		}
 	}
 	
-	if (i1 == '-' && i2 == '-') {
+	if (i1 == -999 && i2 == -999) {
 		return (double) CntBlankStart[j1][j2] / pI;
-	} else if (j1 == '-' && j2 == '-') {
+	} else if (j1 == -999 && j2 == -999) {
 		return (double) CntBlank[i1][i2] / pI;
 	} else {
 		return (double) Cnt[i1][i2][j1][j2] / pI;
@@ -123,7 +123,7 @@ void calSentenceFreq(char *fname)
 				if (line[i + 0] == ' ') {
 					j1 = (line[i + 1] & 0x00FF) - 0x00A1;
 					j2 = (line[i + 2] & 0x00FF) - 0x00A1;
-					freq = getFreq('-', '-', j1, j2);
+					freq = getFreq(-999, -999, j1, j2);
 					printf("  %c%c Freq: %.10f Percent\n", j1+0xA1, j2+0xA1, freq * 100);
 					totalFreq *= freq;
 				}
@@ -133,7 +133,7 @@ void calSentenceFreq(char *fname)
 				if (line[i + 2] == ' ') {
 					i1 = (line[i + 0] & 0x00FF) - 0x00A1;
 					i2 = (line[i + 1] & 0x00FF) - 0x00A1;
-					freq = getFreq(i1, i2, '-', '-');
+					freq = getFreq(i1, i2, -999, -999);
 					printf("%c%c   Freq: %.10f Percent\n", i1+0xA1, i2+0xA1, freq * 100);
 					totalFreq *= freq;
 				}

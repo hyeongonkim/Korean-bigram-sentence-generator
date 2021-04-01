@@ -88,7 +88,7 @@ long freqCountBigram(char *fname) {
 double getFreq(int i1, int i2, int j1, int j2) {
 	int pI = 0;
 
-	if (i1 != '-' && i2 != '-') {
+	if (i1 != -999 && i2 != -999) {
 		for (int j11 = 15; j11 < 40; j11++) {	// 25: B0~C8 으로 축소 가능
 			for (int j22 = 0; j22 < TOTAL_EUC_KR; j22++) {
 				pI += Cnt[i1][i2][j11][j22];
@@ -96,9 +96,9 @@ double getFreq(int i1, int i2, int j1, int j2) {
 		}
 	}
 	
-	if (j1 == '-' && j2 == '-') {
+	if (j1 == -999 && j2 == -999) {
 		pI += CntBlank[i1][i2];
-	} else if (i1 == '-' && i2 == '-') {
+	} else if (i1 == -999 && i2 == -999) {
 		for (int j11 = 15; j11 < 40; j11++) {	// 25: B0~C8 으로 축소 가능
 			for (int j22 = 0; j22 < TOTAL_EUC_KR; j22++) {
 				pI += CntBlankStart[j11][j22];
@@ -106,9 +106,9 @@ double getFreq(int i1, int i2, int j1, int j2) {
 		}
 	}
 	
-	if (i1 == '-' && i2 == '-') {
+	if (i1 == -999 && i2 == -999) {
 		return (double) CntBlankStart[j1][j2] / pI;
-	} else if (j1 == '-' && j2 == '-') {
+	} else if (j1 == -999 && j2 == -999) {
 		return (double) CntBlank[i1][i2] / pI;
 	} else {
 		return (double) Cnt[i1][i2][j1][j2] / pI;
@@ -148,7 +148,7 @@ void calSentenceFreq(char *fname) {
 
 		StrStructs[idx].str = malloc(sizeof(char) * BUFSIZ);
 
-		double totalFreq = 100.0;
+		double totalFreq = 100000000000000000.0;
 		double freq;
 		
 		for (i = 0; len - i >= 3; ) {
@@ -160,7 +160,7 @@ void calSentenceFreq(char *fname) {
 
 					j1 = (line[i + 1] & 0x00FF) - 0x00A1;
 					j2 = (line[i + 2] & 0x00FF) - 0x00A1;
-					totalFreq *= getFreq('-', '-', j1, j2);
+					totalFreq *= getFreq(-999, -999, j1, j2);
 				}
 				i++;
 				continue;	// ASCII char
@@ -172,7 +172,7 @@ void calSentenceFreq(char *fname) {
 
 					i1 = (line[i + 0] & 0x00FF) - 0x00A1;
 					i2 = (line[i + 1] & 0x00FF) - 0x00A1;
-					totalFreq *= getFreq(i1, i2, '-', '-');
+					totalFreq *= getFreq(i1, i2, -999, -999);
 				}
 				i += 2;
 				continue;	// ASCII char
@@ -217,8 +217,8 @@ void calSentenceFreq(char *fname) {
 				k += 2;
 			}
 		}
-		free(StrStructs[i]);
-		printf("\nFreq: %.20f Percent\n\n", StrStructs[i].freq);
+		free(StrStructs[i].str);
+		printf("\nFreq: %.20f Percent(Multifly 10^15)\n\n", StrStructs[i].freq);
 	}
 	
 }
