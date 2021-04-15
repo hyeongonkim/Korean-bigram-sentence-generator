@@ -58,7 +58,7 @@ def cos_sim(va, vb):
 # 평 문장을 받아 트라이그램 리스트로 변환해 리턴합니다.
 def getTrigramFromSentence(sentence):
     n_sentence = sentence.strip()
-    ngrams = [n_sentence[i:i+3] for i in range(len(n_sentence)-2)]
+    ngrams = [n_sentence[i:i+3].replace(' ', '_') for i in range(len(n_sentence)-2)]
     return ngrams
 
 # 말뭉치 코퍼스를 읽으며 한 문장씩 유사도 검사를 수행합니다.
@@ -66,7 +66,7 @@ data_filename = sys.argv[2]
 data_f = open(data_filename, 'r', encoding='utf-8')
 
 # 유사한 문장을 찾기원하는 원시 문장을 입력 받습니다. 유저가 직접 타이핑합니다.
-data_v1_str = input('유사 문장을 찾을 입력 문장을 입력하세요 >>').strip()
+data_v1_str = input('유사 문장을 찾을 입력 문장을 입력하세요 >> ').strip()
 print()
 trigram_data_v1_str = getTrigramFromSentence(data_v1_str)
 
@@ -123,6 +123,7 @@ while data_vi_str:
 	data_vi_str = data_f.readline().strip()
 
 # 최종 결과를 출력합니다.
+print('- - - - - - - - - - - - - - 최종 결과 - - - - - - - - - - - - - -')
 print('입력 문장: ', data_v1_str)
 print('첫번째 유사 문장: {}'.format(first_str[0]))
 print('첫번째 유사도: {}'.format(first_str[1]))
