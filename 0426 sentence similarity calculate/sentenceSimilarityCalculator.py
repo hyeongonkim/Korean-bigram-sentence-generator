@@ -3,7 +3,7 @@ from collections import Counter
 
 # args가 적절하게 입력되었는지 확인
 if len(sys.argv) < 3:
-	print("C> simDoc.py trigram.txt data.txt")
+	print("C> sentenceSimilarityCalculator.py trigram.txt data.txt")
 	exit()
 
 # trigram 텍스트 파일을 읽으며 threshold 이상 등장 빈도를 가진 문자열만 정수 ID 부여
